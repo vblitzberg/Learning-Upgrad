@@ -71,15 +71,18 @@ public class TestRequestController {
     }
     @GetMapping("/api/testrequests/flow/{id}")
     public List<TestRequestFlow> getTestRequestFlowById(@PathVariable Long id) {
-
+        //Get TestRequest from Service By ID
         Optional<TestRequest> requestedForTestRequest = testRequestQueryService.getTestRequestById(id);
+        //Check if TestRequest is found
         if(requestedForTestRequest.isPresent())
         {
+            //If TestRequest is found get flow from testRequestFlowService
             return testRequestFlowService.findByRequest(requestedForTestRequest.get());
         }
         else
         {
-            return new ArrayList<TestRequestFlow>();
+            //If TestRequest is not found, throw exception
+            throw asBadRequest("Invalid Request ID.");
         }
 
     }
