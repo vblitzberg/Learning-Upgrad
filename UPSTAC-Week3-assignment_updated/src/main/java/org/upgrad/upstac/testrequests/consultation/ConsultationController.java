@@ -68,12 +68,12 @@ public class ConsultationController {
     public List<TestRequest> getForDoctor()  {
 
         // Create an object of User class and store the current logged in user first
-        User currentDoctor = userLoggedInService.getLoggedInUser();
+        User loggedInDoctor = userLoggedInService.getLoggedInUser();
 
         //Implement this method to return the list of test requests assigned to current doctor(make use of the above created User object)
         //Make use of the findByDoctor() method from testRequestQueryService class to get the list
         try {
-            return testRequestQueryService.findByDoctor(currentDoctor);
+            return testRequestQueryService.findByDoctor(loggedInDoctor);
         }
         catch (ConstraintViolationException e) { //Throw exception if any
             throw asConstraintViolation(e);
@@ -92,11 +92,11 @@ public class ConsultationController {
         // Implement this method to assign a particular test request to the current doctor(logged in user)
         try {
             //Create an object of User class and get the current logged in user
-            User currentDoctor = userLoggedInService.getLoggedInUser();
+            User loggedInDoctor = userLoggedInService.getLoggedInUser();
 
             //Create an object of TestRequest class and use the assignForConsultation() method of testRequestUpdateService to assign the particular id to the current user
             // return the above created object
-            return testRequestUpdateService.assignForConsultation(id,currentDoctor);
+            return testRequestUpdateService.assignForConsultation(id,loggedInDoctor);
         }catch (ConstraintViolationException e) { //Throw exception if any
             throw asConstraintViolation(e);
         }
@@ -113,11 +113,11 @@ public class ConsultationController {
         // Implement this method to update the result of the current test request id with test doctor comments
         try {
             // Create an object of the User class to get the logged in user
-            User currentDoctor = userLoggedInService.getLoggedInUser();
+            User loggedInDoctor = userLoggedInService.getLoggedInUser();
 
             // Make use of updateConsultation() method from testRequestUpdateService class
             // to update the current test request id with the testResult details by the current user(object created)
-            return testRequestUpdateService.updateConsultation(id,testResult,currentDoctor);
+            return testRequestUpdateService.updateConsultation(id,testResult,loggedInDoctor);
 
         } catch (ConstraintViolationException e) { //Throw exception if any
             throw asConstraintViolation(e);

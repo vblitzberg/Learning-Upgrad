@@ -62,12 +62,12 @@ public class LabRequestController {
         // Implement This Method
 
         // Create an object of User class and store the current logged in user first
-        User loggedInUser = userLoggedInService.getLoggedInUser();
+        User loggedInTester = userLoggedInService.getLoggedInUser();
 
         //Implement this method to return the list of test requests assigned to current tester(make use of the above created User object)
         try {
             //Make use of the findByTester() method from testRequestQueryService class
-            return testRequestQueryService.findByTester(loggedInUser);
+            return testRequestQueryService.findByTester(loggedInTester);
         }
         catch (ConstraintViolationException e) { //Throw exception if any
             throw asConstraintViolation(e);
@@ -81,8 +81,8 @@ public class LabRequestController {
     @PreAuthorize("hasAnyRole('TESTER')")
     @PutMapping("/assign/{id}")
     public TestRequest assignForLabTest(@PathVariable Long id) {
-        User currentTester =userLoggedInService.getLoggedInUser();
-        return   testRequestUpdateService.assignForLabTest(id,currentTester);
+        User loggedInTester = userLoggedInService.getLoggedInUser();
+        return   testRequestUpdateService.assignForLabTest(id,loggedInTester);
     }
 
     @PreAuthorize("hasAnyRole('TESTER')")
@@ -91,8 +91,8 @@ public class LabRequestController {
 
         try {
 
-            User tester=userLoggedInService.getLoggedInUser();
-            return testRequestUpdateService.updateLabTest(id,createLabResult,tester);
+            User loggedInTester = userLoggedInService.getLoggedInUser();
+            return testRequestUpdateService.updateLabTest(id,createLabResult,loggedInTester);
 
 
         } catch (ConstraintViolationException e) {
