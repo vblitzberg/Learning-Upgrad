@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.upgrad.upstac.config.security.UserLoggedInService;
 import org.upgrad.upstac.exception.AppException;
+import org.upgrad.upstac.testrequests.flow.TestRequestFlow;
+import org.upgrad.upstac.testrequests.flow.TestRequestFlowService;
 import org.upgrad.upstac.users.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +29,9 @@ public class TestRequestController {
 
     @Autowired
     private TestRequestService testRequestService;
+
+    @Autowired
+    private TestRequestFlowService testRequestFlowService;
 
     @Autowired
     private UserLoggedInService userLoggedInService;
@@ -63,7 +69,20 @@ public class TestRequestController {
 
 
     }
+    @GetMapping("/api/testrequests/flow/{id}")
+    public List<TestRequestFlow> getTestRequestFlowById(@PathVariable Long id) {
 
+        Optional<TestRequest> requestedForTestRequest = testRequestQueryService.getTestRequestById(id);
+        if(requestedForTestRequest.isPresent())
+        {
+            return testRequestFlowService.findByRequest(requestedForTestRequest.get());
+        }
+        else
+        {
+            return new ArrayList<TestRequestFlow>();
+        }
+
+    }
 
 
 }
